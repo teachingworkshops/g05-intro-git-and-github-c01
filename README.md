@@ -8,6 +8,6 @@ Instructions
 
 Team
 ---
-Raffi Marzella
-Aria Sanderson
-Max Sullivan
+- Raffi Marzella
+- Aria Sanderson
+- Max Sullivan
