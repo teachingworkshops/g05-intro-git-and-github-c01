@@ -62,9 +62,10 @@ def battle(player, enemy):
         print("\nChoose your action:")
         print("1. Light Attack")
         print("2. Heavy Attack")
-        print("3. Switch Element")
+        print("3. Special Attack")
+        print("4. Switch Element")
 
-        action = input("Enter your choice (1, 2, or 3): ")
+        action = input("Enter your choice (1, 2, 3, 4): ")
 
         if action == '1':
             if player.stamina >= 5:
@@ -81,10 +82,12 @@ def battle(player, enemy):
                 print("Not enough stamina for a heavy attack. Using a default attack.")
                 player_damage = calculate_damage(player.current_element, enemy.element, attack_type="default")
         elif action == '3':
+            
+        elif action == '4':
             switch_element(player)
             continue
         else:
-            print("Invalid choice. Please enter 1, 2, or 3.")
+            print("Invalid choice. Please enter 1, 2, 3, 4.")
             continue
 
         enemy_damage = calculate_enemy_damage(enemy.element, player.current_element)
