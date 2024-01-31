@@ -17,6 +17,8 @@ class Player:
         self.current_element = "Air"
         self.stamina = 200
         self.max_hp = 1000
+        self.attack = 1
+        self.defence = 1
         self.hp = self.max_hp
 
     def switch_element(self, new_element):
@@ -69,43 +71,65 @@ def battle(player, enemy):
 
         if action == '1':
             if player.stamina >= 5:
-                player_damage = calculate_damage(player.current_element, enemy.element, attack_type="light")
+                player_damage = calculate_damage(player.current_element, enemy.element, player.attack, attack_type="light")
                 player.consume_stamina(5)
+
+                enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+
+                player.hp -= enemy_damage
+                enemy.hp -= player_damage
+
+                print(f"\nYou dealt {player_damage} damage to the {enemy.name}!")
+                print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
             else:
                 print("Not enough stamina for a light attack. Using a default attack.")
-                player_damage = calculate_damage(player.current_element, enemy.element, attack_type="default")
+                player_damage = calculate_damage(player.current_element, enemy.element, player.attack, attack_type="default")
         elif action == '2':
             if player.stamina >= 10:
-                player_damage = calculate_damage(player.current_element, enemy.element, attack_type="heavy")
+                player_damage = calculate_damage(player.current_element, enemy.element, player.attack, attack_type="heavy")
                 player.consume_stamina(10)
+
+                enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+
+                player.hp -= enemy_damage
+                enemy.hp -= player_damage
+
+                print(f"\nYou dealt {player_damage} damage to the {enemy.name}!")
+                print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
+
             else:
                 print("Not enough stamina for a heavy attack. Using a default attack.")
-                player_damage = calculate_damage(player.current_element, enemy.element, attack_type="default")
+                player_damage = calculate_damage(player.current_element, enemy.element, player.attack, attack_type="default")
         elif action == '3':
-            
+            if player.stamina >= 20:
+                special_attack(player)
+                player.consume_stamina(20)
+
+                enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+                player.hp -= enemy_damage
+                print(f"\nYou used special attack!")
+                print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
+
         elif action == '4':
             switch_element(player)
-            continue
+            enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+            player.hp -= enemy_damage
+            print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
         else:
             print("Invalid choice. Please enter 1, 2, 3, 4.")
             continue
 
-        enemy_damage = calculate_enemy_damage(enemy.element, player.current_element)
-
-        player.hp -= enemy_damage
-        enemy.hp -= player_damage
-
-        print(f"\nYou dealt {player_damage} damage to the {enemy.name}!")
-        print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
-
+        
     if player.hp <= 0:
         print("You were defeated!")
         return False
     else:
         print(f"\nCongratulations! You defeated the {enemy.name}!")
+        player.attack == 1
+        player.defence == 1
         return True
 
-def calculate_enemy_damage(attacker_element, defender_element):
+def calculate_enemy_damage(attacker_element, defender_element, defence):
     #damage multipliers based on element relationships
     element_multipliers = {
         "Air": {"Air": 1, "Earth": 1.5, "Fire": 0.5, "Water": 1},
@@ -120,13 +144,13 @@ def calculate_enemy_damage(attacker_element, defender_element):
     #calculate damage based on multipliers and attack type
     damage_multiplier = element_multipliers[attacker_element][defender_element]
     base_damage = {"light": random.randint(40, 60), "heavy": random.randint(80, 120)}
-    damage = int(base_damage[attack_type] * damage_multiplier)
+    damage = int(base_damage[attack_type] * (defence) * damage_multiplier)
 
     print(f"The {attacker_element} enemy used a {attack_type} attack!")
 
     return damage
 
-def calculate_damage(attacker_element, defender_element, attack_type="default"):
+def calculate_damage(attacker_element, defender_element, attack, attack_type="default"):
     #define damage multipliers based on element relationships
     element_multipliers = {
         "Air": {"Air": 1, "Earth": 1.5, "Fire": 0.5, "Water": 1},
@@ -137,10 +161,23 @@ def calculate_damage(attacker_element, defender_element, attack_type="default"):
 
     damage_multiplier = element_multipliers[attacker_element][defender_element]
     base_damage = {"light": random.randint(40, 60), "heavy": random.randint(80, 120)}
-    damage = int(base_damage[attack_type] * damage_multiplier)   
+    damage = int(base_damage[attack_type] * attack * damage_multiplier)
 
     return damage
 
+def special_attack(player):
+    if player.current_element == 'Air':
+        player.stamina += 100
+    if player.current_element == 'Water':
+        if player.hp <= player.max_hp-100:
+            player.hp += 100
+        else:
+            player.hp = player.max_hp
+    if player.current_element == 'Earth':
+        player.defence -= .5
+    if player.current_element == 'Fire':
+        player.attack += .5
+        
 def switch_element(player):
     print("\nChoose an element to switch to:")
     for i, element in enumerate(player.elements, start=1):
