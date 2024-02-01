@@ -30,7 +30,8 @@ def battle(player, enemy):
     print(f"\nYou encounter a {enemy.name} with {enemy.element} element!")
 
     while player.hp > 0 and enemy.hp > 0:
-        print(f"\nPlayer HP: {player.hp} | {enemy.name} HP: {enemy.hp} | Stamina: {player.stamina}")
+        print(f"\nPlayer HP: {player.hp} | Stamina: {player.stamina}")
+        print(f"\n{enemy.name} HP: {enemy.hp}")
         print("\nChoose your action:")
         print("1. Light Attack")
         print("2. Heavy Attack")
@@ -166,7 +167,7 @@ def switch_element(player):
     else:
         print("Invalid choice. Please enter 1 or 2.")
 
-def enter_area_and_battle(player, enemy):
+def battle(player, enemy):
     battle_result = battle(player, enemy)
     if battle_result:
         print(f"\nCongratulations! You obtained the {enemy.element} element.")
@@ -181,18 +182,18 @@ def main():
     player = Player("Player")
 
     print("Welcome to the Elemental Adventure Game!")
-    print("Your goal is to obtain all the missing elements.")
+    print("Your goal is to obtain all the missing elements by defeating the Lords of the other nations.")
 
     print("Press enter to start")
     input()
 
     #first battle: Water Lord (North)
-    if enter_area_and_battle(player, Enemy("Water Lord", "Water")):
+    if battle(player, Enemy("Water Lord", "Water")):
         #second battle: choose between Fire Lord (West) and Earth Lord (East)
-        if enter_area_and_battle(player, Enemy("Fire Lord", "Fire")):
-            if enter_area_and_battle(player, Enemy("Earth Lord", "Earth")):
+        if battle(player, Enemy("Fire Lord", "Fire")):
+            if battle(player, Enemy("Earth Lord", "Earth")):
                 #final battle: Elemental Master (South)
-                if enter_area_and_battle(player, Enemy("Elemental Master", "All")):
+                if battle(player, Enemy("Elemental Master", "All")):
                     print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
                     print("YOU WIN!")
 
