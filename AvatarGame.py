@@ -167,7 +167,7 @@ def switch_element(player):
     else:
         print("Invalid choice. Please enter 1 or 2.")
 
-def battle(player, enemy):
+def new_battle(player, enemy):
     battle_result = battle(player, enemy)
     if battle_result:
         print(f"\nCongratulations! You obtained the {enemy.element} element.")
@@ -188,12 +188,12 @@ def main():
     input()
 
     #first battle: Water Lord (North)
-    if battle(player, Enemy("Water Lord", "Water")):
+    if new_battle(player, Enemy("Water Lord", "Water")):
         #second battle: choose between Fire Lord (West) and Earth Lord (East)
-        if battle(player, Enemy("Fire Lord", "Fire")):
-            if battle(player, Enemy("Earth Lord", "Earth")):
+        if new_battle(player, Enemy("Fire Lord", "Fire")):
+            if new_battle(player, Enemy("Earth Lord", "Earth")):
                 #final battle: Elemental Master (South)
-                if battle(player, Enemy("Elemental Master", "All")):
+                if new_battle(player, Enemy("Elemental Master", "All")):
                     print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
                     print("YOU WIN!")
 
