@@ -185,7 +185,6 @@ def main():
     print("Your goal is to obtain all the missing elements by defeating the Lords of the other nations.")
 
     print("Press enter to start")
-    input()
 
     #first battle: Water Lord (North)
     if new_battle(player, Enemy("Water Lord", "Water")):
