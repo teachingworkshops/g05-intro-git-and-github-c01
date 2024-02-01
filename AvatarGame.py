@@ -1,15 +1,5 @@
 import random
 
-class Node:
-    def __init__(self, name, description, objects=None):
-        self.name = name
-        self.description = description
-        self.objects = objects or {}
-        self.connections = {}
-
-    def add_connection(self, direction, node):
-        self.connections[direction] = node
-
 class Player:
     def __init__(self, name):
         self.name = name
@@ -35,26 +25,6 @@ class Enemy:
         self.element = element
         self.max_hp = 1000
         self.hp = self.max_hp
-def create_game():
-    #create nodes for different areas
-    starting_area = Node("Start", "You are at the starting area.")
-    north_area = Node("North", "You moved to the north area.")
-    west_area = Node("West", "You moved to the west area.")
-    south_area = Node("South", "You moved to the south area.")
-    east_area = Node("East", "You moved to the east area.")
-
-    #create connections between areas
-    starting_area.add_connection("north", north_area)
-    starting_area.add_connection("west", west_area)
-    starting_area.add_connection("south", south_area)
-    starting_area.add_connection("east", east_area)
-
-    north_area.add_connection("south", starting_area)
-    west_area.add_connection("east", starting_area)
-    south_area.add_connection("north", starting_area)
-    east_area.add_connection("west", starting_area)
-
-    return starting_area
 
 def battle(player, enemy):
     print(f"\nYou encounter a {enemy.name} with {enemy.element} element!")
@@ -123,10 +93,14 @@ def battle(player, enemy):
     if player.hp <= 0:
         print("You were defeated!")
         return False
+    elif player.stamina <= 0:
+        print("You passed out!")
+        return False
     else:
         print(f"\nCongratulations! You defeated the {enemy.name}!")
-        player.attack == 1
-        player.defence == 1
+        player.attack = 1
+        player.defence = 1
+        player.hp += 500
         return True
 
 def calculate_enemy_damage(attacker_element, defender_element, defence):
@@ -174,9 +148,9 @@ def special_attack(player):
         else:
             player.hp = player.max_hp
     if player.current_element == 'Earth':
-        player.defence -= .5
+        player.defence * .8
     if player.current_element == 'Fire':
-        player.attack += .5
+        player.attack * 1.2
         
 def switch_element(player):
     print("\nChoose an element to switch to:")
@@ -192,41 +166,33 @@ def switch_element(player):
     else:
         print("Invalid choice. Please enter 1 or 2.")
 
-def enter_area_and_battle(player, current_area, enemy):
-    print(f"\n{current_area.description}")
-    choice = input("Enter 'battle' to engage in a battle or 'map' to return to the map: ").lower()
-    if choice == "battle":
-        battle_result = battle(player, enemy)
-        if battle_result:
-            print(f"\nCongratulations! You obtained the {enemy.element} element.")
-            player.elements.append(enemy.element)
-            return True
-        else:
-            print("YOU DIED")
-    elif choice == "map":
-        print("\nYou return to the map.")
+def enter_area_and_battle(player, enemy):
+    battle_result = battle(player, enemy)
+    if battle_result:
+        print(f"\nCongratulations! You obtained the {enemy.element} element.")
+        player.elements.append(enemy.element)
+        return True
     else:
-        print("Invalid choice. Please enter 'battle' or 'map'.")
+        print("YOU DIED")
 
     return False
 
 def main():
     player = Player("Player")
-    current_area = create_game()
 
     print("Welcome to the Elemental Adventure Game!")
     print("Your goal is to obtain all the missing elements.")
 
+    print("Press enter to start")
+    input()
+
     #first battle: Water Lord (North)
-    if enter_area_and_battle(player, current_area, Enemy("Water Lord", "Water")):
+    if enter_area_and_battle(player, Enemy("Water Lord", "Water")):
         #second battle: choose between Fire Lord (West) and Earth Lord (East)
-        current_area = current_area.connections["south"]  # Move back to starting point
-        if enter_area_and_battle(player, current_area, Enemy("Fire Lord", "Fire")):
-            current_area = current_area.connections["south"]  # Move back to starting point
-            if enter_area_and_battle(player, current_area, Enemy("Earth Lord", "Earth")):
+        if enter_area_and_battle(player, Enemy("Fire Lord", "Fire")):
+            if enter_area_and_battle(player, Enemy("Earth Lord", "Earth")):
                 #final battle: Elemental Master (South)
-                current_area = current_area.connections["south"]  # Move to Elemental Master's area
-                if enter_area_and_battle(player, current_area, Enemy("Elemental Master", "All")):
+                if enter_area_and_battle(player, Enemy("Elemental Master", "All")):
                     print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
                     print("YOU WIN!")
 
