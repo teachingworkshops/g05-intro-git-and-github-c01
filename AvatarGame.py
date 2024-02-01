@@ -192,7 +192,7 @@ def main():
         if new_battle(player, Enemy("Fire Lord", "Fire")):
             if new_battle(player, Enemy("Earth Lord", "Earth")):
                 #final battle: Elemental Master (South)
-                if new_battle(player, Enemy("Elemental Master", "All")):
+                if new_battle(player, Enemy("Elemental Master", "Air")):
                     print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
                     print("YOU WIN!")
 
