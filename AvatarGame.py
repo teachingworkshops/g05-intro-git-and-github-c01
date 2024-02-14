@@ -72,14 +72,31 @@ def battle(player, enemy):
                 print("Not enough stamina for a heavy attack. Using a default attack.")
                 player_damage = calculate_damage(player.current_element, enemy.element, player.attack, attack_type="default")
         elif action == '3':
-            if player.stamina >= 20:
-                special_attack(player)
-                player.consume_stamina(20)
+            if player.current_element =='Air':
+                print("\nAir Special Attack: Restore your Stamnia by 100")
+            elif player.current_element =='Water':
+                print("\nWater Special Attack : Restore your Health by 100")
+            elif player.current_element =='Earth':
+                print("\nEarth Special Attack : Increase your defense by 80%")
+            elif player.current_element =='Fire':
+                print("\nFire Special Attack : Increase your attack by 20%")
+            else:
+                print("\nNo element!")
+            
+            print("\nConfirm Special Attack!")
+            print("1. Confirm")
+            print("2. Cancel")
+            choice = input("Enter your choice (1, 2): ")
 
-                enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
-                player.hp -= enemy_damage
-                print(f"\nYou used special attack!")
-                print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
+            if choice == '1':
+                if player.stamina >= 20:
+                    special_attack(player)
+                    player.consume_stamina(20)
+
+                    enemy_damage = calculate_enemy_damage(enemy.element, player.current_element, player.defence)
+                    player.hp -= enemy_damage
+                    print(f"\nYou used special attack!")
+                    print(f"The {enemy.name} dealt {enemy_damage} damage to you.")
 
         elif action == '4':
             switch_element(player)
