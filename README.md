@@ -27,3 +27,11 @@ Team
 - Aria Sanderson
 - Max Sullivan
 
+Contributors
+---
+- Group C04
+- Brandan N.
+- Mason O.
+- Oleg Z.
+- Gloria S.
+
