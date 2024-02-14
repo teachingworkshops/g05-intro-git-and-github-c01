@@ -195,6 +195,30 @@ def new_battle(player, enemy):
 
     return False
 
+def next_boss(player):
+    remaining_bosses = [
+    {"name": "Fire Lord", "element": "Fire"},
+    {"name": "Earth Lord", "element": "Earth"},
+    {"name": "Elemental Master", "element": "Air"}]
+
+    while remaining_bosses:
+        print("\nChoose the next boss you want to fight:")
+        for i, boss in enumerate(remaining_bosses, start=1):
+            print(f"{i}. {boss['name']} ({boss['element']})")
+
+        choice = input("Enter your choice: ")
+        if choice.isdigit() and 1 <= int(choice) <= len(remaining_bosses):
+            selected_boss = remaining_bosses.pop(int(choice) - 1)
+            if not new_battle(player, Enemy(selected_boss["name"], selected_boss["element"])):
+                print("Game Over. Try again!")
+                break
+        else:
+            print("Invalid choice. Please enter a number from the list.")
+
+        if not remaining_bosses:
+            print("\nCongratulations! You defeated all bosses and mastered all the elements!")
+            print("YOU WIN!")
+
 def main():
     player = Player("Player")
 
@@ -205,16 +229,8 @@ def main():
 
     #first battle: Water Lord (North)
     if new_battle(player, Enemy("Water Lord", "Water")):
-        #second battle: choose between Fire Lord (West) and Earth Lord (East)
-        if new_battle(player, Enemy("Fire Lord", "Fire")):
-            if new_battle(player, Enemy("Earth Lord", "Earth")):
-                #final battle: Elemental Master (South)
-                if new_battle(player, Enemy("Elemental Master", "Air")):
-                    print("\nCongratulations! You defeated the Elemental Master and mastered all the elements!")
-                    print("YOU WIN!")
+        # Let player choose the next boss from the remaining ones
+        next_boss(player)
 
 if __name__ == "__main__":
     main()
-
-
-
