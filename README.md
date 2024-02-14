@@ -16,7 +16,10 @@ Each turn you have four different options;
    Special attack do not do damage, they give you a certain buff depending on what element you have selected, If you have the air element selected it gives you a stamina boost, If you have water selected it heals you, if you have fire selected it gives you a damage buff, and if you have earth selected it gives you a defensive buff. Special attacks cost 20 stamina
 
    Switching elements will help you defeat certain bosses. For example, if you have facing the Fire Lord it would be smart to select water if possible because water attacks have a 1.5 damage modifier on fire enemies. Experiment with different elements to figure out the ultimate strategy!!!
-   
+
+Distribution
+---
+This game can be played using the Python script or using the executable file.
 
 Team
 ---
